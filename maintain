@@ -1,0 +1,166 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Maintanance
+{
+    public partial class Form1 : Form
+    {
+        int x;
+        int y;
+        int f;
+        int s;
+        int a; int b;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txtPlateNo.Text))
+            {
+                int sum = a + b + x + y + s + f;
+                textBox2.Text = (sum).ToString();
+                MessageBox.Show("Total Price is " + sum.ToString() + "\n" + "Data Saved Successfully!");
+            }
+            else
+            {
+                MessageBox.Show("Please Enter your car PLATE number");
+
+
+            }
+            string plateNo = txtPlateNo.Text;
+            string km = txtKM.Text;
+
+            // التأكد من أن البيانات غير فارغة
+            if (string.IsNullOrWhiteSpace(plateNo) || string.IsNullOrWhiteSpace(km))
+            {
+                MessageBox.Show("Please fill all fields.");
+                return;
+            }
+
+            // إنشاء السطر لتخزينه في الملف
+            string data = $"{plateNo},{km}";
+
+            // كتابة البيانات في ملف نصي
+            File.AppendAllText("CarData.txt", data + Environment.NewLine);
+
+            // تفريغ الحقول بعد الحفظ
+            txtPlateNo.Clear();
+            txtKM.Clear();
+
+
+
+        }
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tire.Checked)
+            {
+                x = 50;
+            }
+            else x = 0;
+
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+
+            if (air.Checked)
+            {
+                a = 100;
+            }
+            else a = 0;
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (boil.Checked)
+            {
+                b = 100;
+            }
+            else b = 0;
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void oil_CheckedChanged(object sender, EventArgs e)
+        {
+
+            if (oil.Checked)
+            { y = 50; }
+            else y = 0;
+        }
+
+        private void springs_CheckedChanged(object sender, EventArgs e)
+        {
+
+            if (springs.Checked)
+            { s = 50; }
+            else s = 0;
+        }
+
+        private void ofilter_CheckedChanged(object sender, EventArgs e)
+        {
+
+            if (ofilter.Checked)
+            {
+                f = 250;
+
+            }
+            else f = 0;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string searchPlateNo = txtSearch.Text;
+
+            // التأكد من إدخال رقم اللوحة
+            if (string.IsNullOrWhiteSpace(searchPlateNo))
+            {
+                MessageBox.Show("Please enter a Plate Number to search.");
+                return;
+            }
+
+            // قراءة كل البيانات من الملف
+            string[] lines = File.ReadAllLines("CarData.txt");
+            var result = lines.FirstOrDefault(line => line.StartsWith(searchPlateNo + ","));
+
+            // عرض النتائج
+            if (result != null)
+            {
+                MessageBox.Show("Car Found: " + result);
+            }
+            else
+            {
+                MessageBox.Show("Car not found.");
+            }
+        }
+    }
+}
